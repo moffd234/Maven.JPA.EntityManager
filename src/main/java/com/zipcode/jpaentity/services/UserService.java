@@ -8,30 +8,30 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class UserService {
-    private final EntityManager entityManager;
+    private final EntityManager manager;
 
     public UserService(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        this.manager = entityManager;
     }
 
     public User findById(int id) {
-        return entityManager.find(User.class, id);
+        return manager.find(User.class, id);
     }
 
     public List<User> findAll() {
         String query = "SELECT u FROM User u"; // Select <alias> from <entityClass (not table name) <alias>
-        TypedQuery<User> typedQuery = entityManager.createQuery(query, User.class);
+        TypedQuery<User> typedQuery = manager.createQuery(query, User.class);
 
         return typedQuery.getResultList();
     }
 
 
     public void create(User user) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = manager.getTransaction();
 
         try {
             transaction.begin();
-            entityManager.persist(user);
+            manager.persist(user);
             transaction.commit();
         } catch (RuntimeException e) {
             rollback(transaction, e);
@@ -39,11 +39,11 @@ public class UserService {
     }
 
     public void update(User user) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = manager.getTransaction();
 
         try {
             transaction.begin();
-            entityManager.merge(user);
+            manager.merge(user);
             transaction.commit();
         } catch (RuntimeException e) {
             rollback(transaction, e);
@@ -54,11 +54,11 @@ public class UserService {
         User user = findById(id);
 
         if (user != null) {
-            EntityTransaction transaction = entityManager.getTransaction();
+            EntityTransaction transaction = manager.getTransaction();
 
             try {
                 transaction.begin();
-                entityManager.remove(user);
+                manager.remove(user);
                 transaction.commit();
             } catch (RuntimeException e) {
                 rollback(transaction, e);
