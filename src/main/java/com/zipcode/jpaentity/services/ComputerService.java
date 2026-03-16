@@ -2,7 +2,7 @@ package com.zipcode.jpaentity.services;
 
 import com.zipcode.jpaentity.entities.Computer;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -15,12 +15,13 @@ public class ComputerService implements ServiceInterface<Computer>{
 
     @Override
     public Computer findById(int id) {
-        return null;
+        return manager.find(Computer.class, id);
     }
 
     @Override
     public List<Computer> findAll() {
-        return List.of();
+        String query = "SELECT c FROM Computer c";
+        return manager.createQuery(query, Computer.class).getResultList();
     }
 
     @Override
