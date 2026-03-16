@@ -25,4 +25,17 @@ public class UserService {
     }
 
 
+    public void create(User user) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
+    }
+
+    public void update(User user) {
+
+    }
+
+    public void delete(int id) {
+
+    }
 }

@@ -82,4 +82,4 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/intellij
-src/main/resources/META-INF/persistance.xml
+src/main/resources/META-INF/persistence.xml
