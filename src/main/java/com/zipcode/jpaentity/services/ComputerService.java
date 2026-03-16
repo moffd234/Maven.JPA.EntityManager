@@ -2,11 +2,11 @@ package com.zipcode.jpaentity.services;
 
 import com.zipcode.jpaentity.entities.Computer;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
 
-public class ComputerService implements ServiceInterface<Computer>{
+public class ComputerService implements ServiceInterface<Computer> {
     private final EntityManager manager;
 
     public ComputerService(EntityManager manager) {
@@ -25,8 +25,16 @@ public class ComputerService implements ServiceInterface<Computer>{
     }
 
     @Override
-    public void create(Computer input) {
+    public void create(Computer computer) {
+        EntityTransaction transaction = manager.getTransaction();
 
+        try {
+            transaction.begin();
+            manager.persist(computer);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            rollback(transaction, e);
+        }
     }
 
     @Override
