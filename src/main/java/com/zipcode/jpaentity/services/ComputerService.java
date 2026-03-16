@@ -1,20 +1,40 @@
 package com.zipcode.jpaentity.services;
 
+import com.zipcode.jpaentity.entities.Computer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
-public class ComputerService {
+import java.util.List;
+
+public class ComputerService implements ServiceInterface<Computer>{
     private final EntityManager manager;
 
     public ComputerService(EntityManager manager) {
         this.manager = manager;
     }
 
-    private void rollback(EntityTransaction transaction, RuntimeException e) throws RuntimeException {
-        if (transaction.isActive()) {
-            transaction.rollback();
-        }
+    @Override
+    public Computer findById(int id) {
+        return null;
+    }
 
-        throw e;
+    @Override
+    public List<Computer> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public void create(Computer input) {
+
+    }
+
+    @Override
+    public void update(Computer input) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
     }
 }
