@@ -2,6 +2,7 @@ package com.zipcode.jpaentity.services;
 
 import com.zipcode.jpaentity.entities.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -45,5 +46,13 @@ public class UserService {
             entityManager.remove(user);
             entityManager.getTransaction().commit();
         }
+    }
+
+    private void rollback(EntityTransaction transaction, RuntimeException e) throws RuntimeException {
+        if(transaction.isActive()){
+            transaction.rollback();
+        }
+
+        throw e;
     }
 }
