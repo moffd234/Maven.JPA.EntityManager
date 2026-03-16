@@ -40,6 +40,17 @@ public class ComputerService implements ServiceInterface<Computer> {
     @Override
     public void update(Computer input) {
 
+        EntityTransaction transaction = manager.getTransaction();
+
+        try {
+            transaction.begin();
+            manager.merge(input);
+            transaction.commit();
+
+        } catch (RuntimeException e) {
+            rollback(transaction, e);
+        }
+
     }
 
     @Override
