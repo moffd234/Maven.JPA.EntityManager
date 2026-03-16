@@ -7,7 +7,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class UserService {
+public class UserService implements ServiceInterface<User>{
     private final EntityManager manager;
 
     public UserService(EntityManager entityManager) {
@@ -64,13 +64,5 @@ public class UserService {
                 rollback(transaction, e);
             }
         }
-    }
-
-    private void rollback(EntityTransaction transaction, RuntimeException e) throws RuntimeException {
-        if (transaction.isActive()) {
-            transaction.rollback();
-        }
-
-        throw e;
     }
 }
