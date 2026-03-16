@@ -32,10 +32,18 @@ public class UserService {
     }
 
     public void update(User user) {
-
+        entityManager.getTransaction().begin();
+        entityManager.merge(user);
+        entityManager.getTransaction().commit();
     }
 
     public void delete(int id) {
+        User user = findById(id);
 
+        if(user != null) {
+            entityManager.getTransaction().begin();
+            entityManager.remove(user);
+            entityManager.getTransaction().commit();
+        }
     }
 }
