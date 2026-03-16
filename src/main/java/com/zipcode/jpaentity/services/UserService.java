@@ -27,29 +27,47 @@ public class UserService {
 
 
     public void create(User user) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(user);
-        entityManager.getTransaction().commit();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.persist(user);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            rollback(transaction, e);
+        }
     }
 
     public void update(User user) {
-        entityManager.getTransaction().begin();
-        entityManager.merge(user);
-        entityManager.getTransaction().commit();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.merge(user);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            rollback(transaction, e);
+        }
     }
 
     public void delete(int id) {
         User user = findById(id);
 
-        if(user != null) {
-            entityManager.getTransaction().begin();
-            entityManager.remove(user);
-            entityManager.getTransaction().commit();
+        if (user != null) {
+            EntityTransaction transaction = entityManager.getTransaction();
+
+            try {
+                transaction.begin();
+                entityManager.remove(user);
+                transaction.commit();
+            } catch (RuntimeException e) {
+                rollback(transaction, e);
+            }
         }
     }
 
     private void rollback(EntityTransaction transaction, RuntimeException e) throws RuntimeException {
-        if(transaction.isActive()){
+        if (transaction.isActive()) {
             transaction.rollback();
         }
 
