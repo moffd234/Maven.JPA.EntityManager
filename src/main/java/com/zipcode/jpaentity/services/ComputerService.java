@@ -55,6 +55,17 @@ public class ComputerService implements ServiceInterface<Computer> {
 
     @Override
     public void delete(int id) {
+        Computer computer = findById(id);
 
+        if (computer != null) {
+            EntityTransaction transaction = manager.getTransaction();
+            try {
+                transaction.begin();
+                manager.remove(computer);
+                transaction.commit();
+            } catch (RuntimeException e) {
+                rollback(transaction, e);
+            }
+        }
     }
 }
